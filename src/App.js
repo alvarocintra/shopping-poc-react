@@ -1,6 +1,6 @@
 import { GraphQLClient, gql } from 'graphql-request'
-
-let result;
+import logo from './logo.svg'
+import './App.css'
 
 async function main() {
   const endpoint = 'https://shopping-apiman-dev.azure-api.net/graphql'
@@ -33,7 +33,6 @@ async function main() {
 
   const data = await graphQLClient.request(mutation, variables)
   console.log(JSON.stringify(data, undefined, 2))
-  result = JSON.stringify(data, undefined, 2)
 }
 
 main().catch((error) => console.error(error))
@@ -42,9 +41,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
-          {result}
         </p>
         <a
           className="App-link"
