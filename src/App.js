@@ -1,41 +1,71 @@
-import { GraphQLClient, gql } from 'graphql-request'
+// import { GraphQLClient, gql } from 'graphql-request'
 import logo from './logo.svg'
 import './App.css'
 
-async function main() {
-  const endpoint = 'https://shopping-apiman-dev.azure-api.net/graphql'
+require('isomorphic-fetch');
+//https://shopping-apiman-dev.azure-api.net/graphql
+//https://shopping-graphql.azurewebsites.net/graphql
+fetch('https://shopping-apiman-dev.azure-api.net/graphql', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': 'adfb9221597a425ebfa843a4e60ce6f9' },
+  body: JSON.stringify({ 
+    query: `
+      mutation($person: personInput!){
+        createPerson(person: $person){
+          id,
+          firstName,
+          lastName,
+          age,
+          createdAt
+        }
+      }`,
+    variables: {
+      person: {
+        firstName: 'asd123',
+        lastName: '321dsa',
+        age: '33'
+      }      
+    } 
+  }),  
+})
+.then(res => console.log(res.json()))
+.then(res => console.log(res));
 
-  const graphQLClient = new GraphQLClient(endpoint, {
-    headers: {
-      'Ocp-Apim-Subscription-Key': 'adfb9221597a425ebfa843a4e60ce6f9',
-    },
-  })
+// async function main() {
+//   const endpoint = 'https://shopping-apiman-dev.azure-api.net/graphql'
 
-  const mutation = gql`
-    mutation($person: personInput!){
-      createPerson(person: $person){
-        id,
-        firstName,
-        lastName,
-        age,
-        createdAt
-      }
-    }
-  `
+//   const graphQLClient = new GraphQLClient(endpoint, {
+//     headers: {
+//       'Ocp-Apim-Subscription-Key': 'adfb9221597a425ebfa843a4e60ce6f9',
+//     },
+//   })
 
-  const variables = {
-    person: {
-      firstName: 'Josxe11',
-      lastName: 'Silvxa22',
-      age: '4423'
-    }
-  }
+//   const mutation = gql`
+//     mutation($person: personInput!){
+//       createPerson(person: $person){
+//         id,
+//         firstName,
+//         lastName,
+//         age,
+//         createdAt
+//       }
+//     }
+//   `
 
-  const data = await graphQLClient.request(mutation, variables)
-  console.log(JSON.stringify(data, undefined, 2))
-}
+//   const variables = {
+//     person: {
+//       firstName: 'Josxe11',
+//       lastName: 'Silvxa22',
+//       age: '4423'
+//     }
+//   }
 
-main().catch((error) => console.error(error))
+//   const data = await graphQLClient.request(mutation, variables)
+//   console.log(JSON.stringify(data, undefined, 2))
+// }
+
+
+// main().catch((error) => console.error(error))
 
 function App() {
   return (
